@@ -3,6 +3,8 @@
 
 #include "view/bluetooth_widget.h"
 
+#include <QVBoxLayout>
+
 
 namespace auto_pi {
 
@@ -10,7 +12,11 @@ namespace auto_pi {
 BluetoothWidget::BluetoothWidget(QWidget *parent) : QWidget(parent) {
   agent_ = new BluetoothAgent(this);
 
+  auto *layout = new QVBoxLayout(this);
   bluetooth_list_ = new QListWidget(this);
+
+  layout->addWidget(bluetooth_list_);
+  setLayout(layout);
 
   connect(agent_, SIGNAL(DeviceDiscoveredEvent(const QBluetoothDeviceInfo &)),
           this, SLOT(OnDeviceDiscovered(const QBluetoothDeviceInfo &)));
