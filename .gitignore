@@ -1,0 +1,3 @@
+# ignore qt creator files
+auto_pi.pro.user
+Makefile
