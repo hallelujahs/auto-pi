@@ -5,8 +5,11 @@
 
 
 #include <QWidget>
+#include <QString>
 #include <QStackedLayout>
 
+#include "view/config_widget.h"
+#include "view/display_widget.h"
 #include "view/bluetooth_widget.h"
 
 
@@ -21,8 +24,17 @@ class CentralWidget : public QWidget {
  signals:
 
  public slots:
+  void OnConfig();
+
+  void OnConfigOBD();
+
+  void OnConfigOk();
+
+  void OnBluetooth(QString address);
 
  private:
+  ConfigWidget *config_widget_;
+  DisplayWidget *display_widget_;
   BluetoothWidget *bluetooth_widget_;
 
   QStackedLayout *layout_;

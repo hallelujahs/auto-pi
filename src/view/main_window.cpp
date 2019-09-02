@@ -2,6 +2,8 @@
 //
 
 #include "view/main_window.h"
+#include "commons/singleton.h"
+#include "controller/global_config.h"
 
 
 namespace auto_pi {
@@ -14,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
   showFullScreen();
+
+  Singleton<GlobalConfig>::Instance()->LoadConfig();
 }
 
 

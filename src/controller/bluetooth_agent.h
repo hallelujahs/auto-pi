@@ -3,6 +3,10 @@
 
 #pragma once  // NOLINT(build/header_guard)
 
+#include <QMap>
+#include <QList>
+#include <QString>
+#include <QBluetoothDeviceInfo>
 #include <QBluetoothDeviceDiscoveryAgent>
 
 
@@ -17,14 +21,23 @@ class BluetoothAgent : public QObject {
 
   void ScanDevice();
 
+  QString DeviceAddress(const QString &name);
+
  public slots:
   void OnScanFinished();
 
  signals:
   void DeviceDiscoveredEvent(const QBluetoothDeviceInfo &info);
 
+  void ScanFinishedEvent();
+
+ private:
+  void ScanHistoricalDevices();
+
  private:
   QBluetoothDeviceDiscoveryAgent *discovery_agent_;
+  QList<QBluetoothDeviceInfo> devices_;
+  QMap<QString, QString> historical_devices_;
 };
 
 

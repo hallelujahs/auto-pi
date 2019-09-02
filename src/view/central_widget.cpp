@@ -3,24 +3,62 @@
 
 
 #include "view/central_widget.h"
+#include <QDebug>
 
 
 namespace auto_pi {
 
 
 enum class StackedWidgetIndex : int {
-  kBluetooth = 1,
+  kDisplay = 0,
+  kConfig = 1,
+  kBluetooth = 2,
 };
 
 
 CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
+  config_widget_ = new ConfigWidget(this);
+  display_widget_ = new DisplayWidget(this);
   bluetooth_widget_ = new BluetoothWidget(this);
 
   layout_ = new QStackedLayout(this);
   layout_->insertWidget(
+        static_cast<int>(StackedWidgetIndex::kDisplay), display_widget_);
+  layout_->insertWidget(
+        static_cast<int>(StackedWidgetIndex::kConfig), config_widget_);
+  layout_->insertWidget(
         static_cast<int>(StackedWidgetIndex::kBluetooth), bluetooth_widget_);
 
   setLayout(layout_);
+
+  connect(display_widget_, &DisplayWidget::ConfigEvent,
+          this, &CentralWidget::OnConfig);
+  connect(config_widget_, &ConfigWidget::OBDEvent,
+          this, &CentralWidget::OnConfigOBD);
+  connect(config_widget_, &ConfigWidget::OkEvent,
+          this, &CentralWidget::OnConfigOk);
+  connect(bluetooth_widget_, &BluetoothWidget::ItemSelectedEvent,
+          this, &CentralWidget::OnBluetooth);
+}
+
+void CentralWidget::OnConfig() {
+  qInfo() << "[W] change to config widget";
+  layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kConfig));
+}
+
+void CentralWidget::OnConfigOBD() {
+  qInfo() << "[W] change to bluetooth widget";
+  layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kBluetooth));
+}
+
+void CentralWidget::OnConfigOk() {
+  qInfo() << "[W] change to display widget";
+  layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kDisplay));
+}
+
+void CentralWidget::OnBluetooth(QString address) {
+  qInfo() << "[W] change to config widget: " << address;
+  layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kConfig));
 }
 
 
