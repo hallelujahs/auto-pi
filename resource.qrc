@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file alias="icon.png">resource/icon.png</file>
+        <file alias="config.png">resource/config.png</file>
+        <file alias="bluetooth_notset.png">resource/bluetooth_notset.png</file>
+        <file alias="bluetooth_unconnect.png">resource/bluetooth_unconnect.png</file>
+        <file alias="bluetooth_connected.png">resource/bluetooth_connected.png</file>
     </qresource>
 </RCC>
