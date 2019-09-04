@@ -30,8 +30,8 @@ SOURCES += \
     src/view/central_widget.cpp \
     src/view/config_widget.cpp \
     src/view/display_widget.cpp \
-    src/view/main_window.cpp \
-    src/controller/bluetooth_agent.cpp
+    src/view/lcd_number.cpp \
+    src/view/main_window.cpp
 HEADERS += \
     src/commons/singleton.h \
     src/controller/global_config.h \
@@ -40,7 +40,7 @@ HEADERS += \
     src/view/central_widget.h \
     src/view/config_widget.h \
     src/view/display_widget.h \
-    src/view/main_window.h \
-    src/controller/bluetooth_agent.h
+    src/view/lcd_number.h \
+    src/view/main_window.h
 RESOURCES += \
     resource.qrc

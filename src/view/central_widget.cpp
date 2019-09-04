@@ -4,6 +4,8 @@
 
 #include "view/central_widget.h"
 #include <QDebug>
+#include "commons/singleton.h"
+#include "controller/obd_client.h"
 
 
 namespace auto_pi {
@@ -48,6 +50,12 @@ void CentralWidget::OnConfig() {
 
 void CentralWidget::OnConfigOBD() {
   qInfo() << "[W] change to bluetooth widget";
+  auto *obd_client = Singleton<OBDClient>::Instance();
+  connect(bluetooth_widget_, &BluetoothWidget::DeviceSelectedEvent,
+          obd_client, &OBDClient::OnDeviceSelected);
+  connect(bluetooth_widget_, &BluetoothWidget::ServiceSelectedEvent,
+          obd_client, &OBDClient::OnServiceSelected);
+
   layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kBluetooth));
 }
 
@@ -56,8 +64,9 @@ void CentralWidget::OnConfigOk() {
   layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kDisplay));
 }
 
-void CentralWidget::OnBluetooth(QString address) {
-  qInfo() << "[W] change to config widget: " << address;
+void CentralWidget::OnBluetooth() {
+  qInfo() << "[W] change to config widget";
+  disconnect(bluetooth_widget_);
   layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kConfig));
 }
 

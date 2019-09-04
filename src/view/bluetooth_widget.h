@@ -4,11 +4,15 @@
 #pragma once  // NOLINT(build/header_guard)
 
 
+#include <QList>
 #include <QWidget>
+#include <QCheckBox>
 #include <QPushButton>
-#include <QListWidget>
 #include <QTableWidget>
-#include "controller/bluetooth_agent.h"
+#include <QBluetoothDeviceInfo>
+#include <QBluetoothServiceInfo>
+#include <QBluetoothDeviceDiscoveryAgent>
+#include <QBluetoothServiceDiscoveryAgent>
 
 
 namespace auto_pi {
@@ -20,21 +24,42 @@ class BluetoothWidget : public QWidget {
   explicit BluetoothWidget(QWidget *parent = nullptr);
 
  signals:
-  void ItemSelectedEvent(QString addr);
+  void ItemSelectedEvent();
+
+  void DeviceSelectedEvent(const QBluetoothDeviceInfo &info);
+
+  void ServiceSelectedEvent(const QBluetoothServiceInfo &info);
 
  public slots:
   void OnScan();
 
-  void OnScanFinished();
+  void OnDeviceScanFinished();
+
+  void OnServiceScanFinished();
 
   void OnDeviceDiscovered(const QBluetoothDeviceInfo &info);
 
-  void OnItemDoubleClicked(QListWidgetItem *item);
+  void OnServiceDiscovered(const QBluetoothServiceInfo &info);
+
+  void OnItemDoubleClicked(QTableWidgetItem *item);
 
  private:
-  BluetoothAgent *agent_;
+  void ClearDeviceList();
+
+  void AddDeviceInfo(const QString &type, const QBluetoothDeviceInfo &info);
+
+ private:
+  QCheckBox *scan_device_;
+  QCheckBox *scan_service_;
+
   QPushButton *scan_button_;
-  QListWidget *bluetooth_list_;
+  QTableWidget *bluetooth_list_;
+
+  QBluetoothDeviceDiscoveryAgent *device_agent_;
+  QBluetoothServiceDiscoveryAgent *service_agent_;
+
+  QList<QBluetoothDeviceInfo> devices_;
+  QList<QBluetoothServiceInfo> services_;
 };
 
 

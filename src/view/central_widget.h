@@ -30,7 +30,7 @@ class CentralWidget : public QWidget {
 
   void OnConfigOk();
 
-  void OnBluetooth(QString address);
+  void OnBluetooth();
 
  private:
   ConfigWidget *config_widget_;

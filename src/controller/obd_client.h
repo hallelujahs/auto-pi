@@ -5,6 +5,8 @@
 
 #include <QObject>
 #include <QBluetoothSocket>
+#include <QBluetoothDeviceInfo>
+#include <QBluetoothServiceInfo>
 
 
 namespace auto_pi {
@@ -22,6 +24,9 @@ class OBDClient : public QObject {
  signals:
 
  public slots:
+  void OnDeviceSelected(const QBluetoothDeviceInfo &info);
+
+  void OnServiceSelected(const QBluetoothServiceInfo &info);
 
  private:
   QBluetoothSocket *obd_connection_;
