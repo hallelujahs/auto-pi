@@ -1,9 +1,34 @@
-<RCC>
+<!DOCTYPE RCC>
+<RCC version="1.0">
     <qresource prefix="/">
         <file alias="icon.png">resource/icon.png</file>
         <file alias="config.png">resource/config.png</file>
+        
         <file alias="bluetooth_notset.png">resource/bluetooth_notset.png</file>
         <file alias="bluetooth_unconnect.png">resource/bluetooth_unconnect.png</file>
         <file alias="bluetooth_connected.png">resource/bluetooth_connected.png</file>
+
+        <file alias="0.png">resource/0.png</file>
+        <file alias="1.png">resource/1.png</file>
+        <file alias="2.png">resource/2.png</file>
+        <file alias="3.png">resource/3.png</file>
+        <file alias="4.png">resource/4.png</file>
+        <file alias="5.png">resource/5.png</file>
+        <file alias="6.png">resource/6.png</file>
+        <file alias="7.png">resource/7.png</file>
+        <file alias="8.png">resource/8.png</file>
+        <file alias="9.png">resource/9.png</file>
+
+        <file alias="sign_airbag.png">resource/sign_airbag.png</file>
+        <file alias="sign_battery.png">resource/sign_battery.png</file>
+        <file alias="sign_door_open.png">resource/sign_door_open.png</file>
+        <file alias="sign_drowsy.png">resource/sign_drowsy.png</file>
+        <file alias="sign_engine.png">resource/sign_engine.png</file>
+        <file alias="sign_gasoline.png">resource/sign_gasoline.png</file>
+        <file alias="sign_oil_pressure.png">resource/sign_oil_pressure.png</file>
+        <file alias="sign_parking_brake.png">resource/sign_parking_brake.png</file>
+        <file alias="sign_seat_belt.png">resource/sign_seat_belt.png</file>
+        <file alias="sign_temperature.png">resource/sign_temperature.png</file>
+        <file alias="sign_tire.png">resource/sign_tire.png</file>
     </qresource>
 </RCC>
