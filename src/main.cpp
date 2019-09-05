@@ -4,6 +4,7 @@
 
 #include <QApplication>
 #include "view/main_window.h"
+#include "controller/log_controller.h"
 
 
 int main(int argc, char *argv[]) {
@@ -18,6 +19,8 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationDomain("winking.io");
   QCoreApplication::setApplicationName("auto-pi");
   QApplication a(argc, argv);
+
+  auto_pi::InitLog();
 
   auto_pi::MainWindow w;
   w.show();
