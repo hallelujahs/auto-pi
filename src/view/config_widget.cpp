@@ -4,6 +4,7 @@
 
 #include "view/config_widget.h"
 
+#include <QProcess>
 #include <QGridLayout>
 #include <QNetworkInterface>
 
@@ -19,33 +20,51 @@ ConfigWidget::ConfigWidget(QWidget *parent) : QWidget(parent) {
   layout->setAlignment(Qt::AlignTop);
 
   update_timer_ = new QTimer(this);
-  ip_label_ = new QLabel(this);
-  obd_status_label_ = new QLabel(this);
-  obd_button_ = new QPushButton("Set", this);
-  ok_button_ = new QPushButton("OK", this);
+  local_ip_ = new QLabel(this);
+  obd_status_ = new QLabel(this);
+  config_obd_ = new QPushButton("Set", this);
+
+  reboot_ = new QPushButton("Reboot", this);
+  power_off_ = new QPushButton("PowerOff", this);
+  confirm_ = new QPushButton("OK", this);
 
   update_timer_->setInterval(1000);
 
   int row = 0;
   layout->addWidget(new QLabel("IP", this), row, 0);
-  layout->addWidget(ip_label_, row, 1);
+  layout->addWidget(local_ip_, row, 1);
 
   layout->addWidget(new QLabel("OBD", this), ++row, 0);
-  layout->addWidget(obd_status_label_, row, 1);
-  layout->addWidget(obd_button_, row , 2);
+  layout->addWidget(obd_status_, row, 1);
+  layout->addWidget(config_obd_, row , 2);
 
-  layout->addWidget(ok_button_, ++row, 2);
+  layout->addWidget(reboot_, ++row, 0);
+  layout->addWidget(power_off_, row, 1);
+  layout->addWidget(confirm_, row, 2);
 
   setLayout(layout);
 
-  connect(ok_button_, &QPushButton::released, this, &ConfigWidget::OkEvent);
-  connect(obd_button_, &QPushButton::released, this, &ConfigWidget::OBDEvent);
+  connect(config_obd_, &QPushButton::released, this, &ConfigWidget::OBDEvent);
   connect(update_timer_, &QTimer::timeout, this, &ConfigWidget::OnUpdateTimer);
+
+  connect(confirm_, &QPushButton::released, this, &ConfigWidget::OkEvent);
+  connect(reboot_, &QPushButton::released, this, &ConfigWidget::OnReboot);
+  connect(power_off_, &QPushButton::released, this, &ConfigWidget::OnPowerOff);
 }
 
 void ConfigWidget::OnUpdateTimer() {
   UpdateIp();
   UpdateOBDStatus();
+}
+
+void ConfigWidget::OnReboot() {
+  QProcess process;
+  process.startDetached("shutdown -r now");
+}
+
+void ConfigWidget::OnPowerOff() {
+  QProcess process;
+  process.startDetached("shutdown -P now");
 }
 
 void ConfigWidget::showEvent(QShowEvent *) {
@@ -69,7 +88,7 @@ void ConfigWidget::UpdateIp() {
     if (ip_str == "127.0.0.1") {
       continue;
     }
-    ip_label_->setText(ip_str);
+    local_ip_->setText(ip_str);
     break;
   }
 }
@@ -77,16 +96,16 @@ void ConfigWidget::UpdateIp() {
 void ConfigWidget::UpdateOBDStatus() {
   auto *obd_client = Singleton<OBDClient>::Instance();
   if (!obd_client->IsSetted()) {
-    obd_status_label_->setPixmap(QPixmap(":/bluetooth_notset.png"));
+    obd_status_->setPixmap(QPixmap(":/bluetooth_notset.png"));
     return;
   }
 
   if (!obd_client->IsConnected()) {
-    obd_status_label_->setPixmap(QPixmap(":/bluetooth_unconnect.png"));
+    obd_status_->setPixmap(QPixmap(":/bluetooth_unconnect.png"));
     return;
   }
 
-  obd_status_label_->setPixmap(QPixmap(":/bluetooth_connected.png"));
+  obd_status_->setPixmap(QPixmap(":/bluetooth_connected.png"));
 }
 
 

@@ -26,6 +26,10 @@ class ConfigWidget : public QWidget {
  public slots:
   void OnUpdateTimer();
 
+  void OnReboot();
+
+  void OnPowerOff();
+
  protected:
   virtual void showEvent(QShowEvent *event) override;
 
@@ -38,10 +42,13 @@ class ConfigWidget : public QWidget {
 
  private:
   QTimer *update_timer_;
-  QLabel *ip_label_;
-  QLabel *obd_status_label_;
-  QPushButton *obd_button_;
-  QPushButton *ok_button_;
+  QLabel *local_ip_;
+  QLabel *obd_status_;
+
+  QPushButton *config_obd_;
+  QPushButton *reboot_;
+  QPushButton *power_off_;
+  QPushButton *confirm_;
 };
 
 
