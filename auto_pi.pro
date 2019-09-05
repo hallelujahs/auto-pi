@@ -24,6 +24,7 @@ QMAKE_CLEAN += $(TARGET) $(QMAKE_TARGET) bin/auto-pi
 # PART 4: Input
 SOURCES += \
     src/controller/global_config.cpp \
+    src/controller/log_controller.cpp \
     src/controller/obd_client.cpp \
     src/main.cpp \
     src/view/bluetooth_widget.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 HEADERS += \
     src/commons/singleton.h \
     src/controller/global_config.h \
+    src/controller/log_controller.h \
     src/controller/obd_client.h \
     src/view/bluetooth_widget.h \
     src/view/central_widget.h \
