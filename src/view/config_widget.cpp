@@ -58,11 +58,13 @@ void ConfigWidget::OnUpdateTimer() {
 }
 
 void ConfigWidget::OnReboot() {
+  qInfo() << "reboot";
   QProcess process;
   process.startDetached("shutdown -r now");
 }
 
 void ConfigWidget::OnPowerOff() {
+  qInfo() << "power off";
   QProcess process;
   process.startDetached("shutdown -P now");
 }
@@ -89,6 +91,7 @@ void ConfigWidget::UpdateIp() {
       continue;
     }
     local_ip_->setText(ip_str);
+    qInfo() << "scan local ip: " << ip_str;
     break;
   }
 }

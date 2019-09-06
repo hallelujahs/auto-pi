@@ -198,6 +198,25 @@ void BluetoothWidget::AddDeviceInfo(const QString &type,
         last_row, static_cast<int>(BluetoothTableColumn::kName), name_item);
   bluetooth_list_->setItem(
         last_row, static_cast<int>(BluetoothTableColumn::kAddress), addr_item);
+
+  auto service_uuids = info.serviceUuids();
+  QString service_uuids_str;
+  if (!service_uuids.isEmpty()) {
+    service_uuids_str = service_uuids.begin()->toString();
+    std::accumulate(std::next(service_uuids.begin()), service_uuids.end(),
+                    service_uuids_str,
+                    [&](QString out_str, const QBluetoothUuid &uuid){
+      return out_str + "," + uuid.toString();
+    });
+  }
+
+  qDebug() << "[" << type << "|" << info.rssi() << "] name: " << info.name()
+           << ", address" << info.address().toString() << ", type: "
+           << info.coreConfigurations() << ", major: "
+           << info.majorDeviceClass() << ", minor: " << info.minorDeviceClass()
+           << ", service: " << info.serviceClasses() << ", device uuid: "
+           << info.deviceUuid().toString() << ", service uuids: "
+           << service_uuids_str;
 }
 
 
