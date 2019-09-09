@@ -66,7 +66,8 @@ void CentralWidget::OnConfigOk() {
 
 void CentralWidget::OnBluetooth() {
   qInfo() << "[W] change to config widget";
-  disconnect(bluetooth_widget_);
+  auto *obd_client = Singleton<OBDClient>::Instance();
+  bluetooth_widget_->disconnect(obd_client);
   layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kConfig));
 }
 
