@@ -3,6 +3,7 @@
 
 
 #include "view/lcd_number.h"
+#include <QImage>
 #include <QPixmap>
 #include <QVector>
 
@@ -46,9 +47,13 @@ void LCDNumber::Display(uint32_t number) {
   }
 
   auto number_iter = numbers_.begin();
-  for (auto iter = numbers_str.begin(); iter != numbers_str.end();
+  for (auto iter = numbers_str.rbegin(); iter != numbers_str.rend();
        ++iter,++number_iter) {
-    (*number_iter)->setPixmap(QPixmap(kNumberIcon[QString(*iter).toInt()]).scaled(QSize(80, 80), Qt::KeepAspectRatio));
+    auto img = QImage(kNumberIcon[QString(*iter).toInt()]);
+    (*number_iter)->setPixmap(
+          QPixmap::fromImage(
+            img.mirrored(true, false)).scaled(
+            QSize(80, 80), Qt::KeepAspectRatio));
   }
 }
 
