@@ -53,8 +53,8 @@ BluetoothWidget::BluetoothWidget(QWidget *parent) : QWidget(parent) {
 
   check_box_layout->addWidget(scan_service_);
   check_box_layout->addWidget(scan_device_);
-  scan_service_->setChecked(true);
-  scan_device_->setChecked(false);
+  scan_service_->setChecked(false);
+  scan_device_->setChecked(true);
 
   layout->addLayout(check_box_layout);
   layout->addWidget(scan_button_);
