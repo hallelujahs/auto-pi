@@ -15,6 +15,7 @@ INCLUDEPATH += src
 INCLUDEPATH += /usr/local/include
 LIBS += -L/usr/lib -L/usr/local/lib
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_MESSAGELOGCONTEXT
 
 #---------------------------------------------------------------------
 # PART 3: Clean
