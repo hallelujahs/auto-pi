@@ -4,21 +4,24 @@
 #pragma once  // NOLINT(build/header_guard)
 
 
-#include <QObject>
+#include <QThread>
 
 
 namespace auto_pi {
 
 
-class Bluetooth : public QObject {
+class BluetoothClient : public QThread {
   Q_OBJECT
 
  public:
-  explicit Bluetooth(QObject *parent = nullptr);
+  explicit BluetoothClient(QObject *parent = nullptr);
 
  signals:
 
  public slots:
+
+ private:
+  void run() override;
 
 };
 

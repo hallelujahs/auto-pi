@@ -25,7 +25,7 @@ QMAKE_CLEAN += $(TARGET) $(QMAKE_TARGET) bin/auto-pi
 #---------------------------------------------------------------------
 # PART 4: Input
 SOURCES += \
-    src/controller/bluetooth.cpp \
+    src/controller/bluetooth_client.cpp \
     src/controller/bluetooth_discovery_agent.cpp \
     src/controller/global_config.cpp \
     src/controller/log_controller.cpp \
@@ -39,7 +39,7 @@ SOURCES += \
     src/view/main_window.cpp
 HEADERS += \
     src/commons/singleton.h \
-    src/controller/bluetooth.h \
+    src/controller/bluetooth_client.h \
     src/controller/bluetooth_discovery_agent.h \
     src/controller/global_config.h \
     src/controller/log_controller.h \

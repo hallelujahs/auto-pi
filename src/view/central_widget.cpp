@@ -53,8 +53,6 @@ void CentralWidget::OnConfigOBD() {
   auto *obd_client = Singleton<OBDClient>::Instance();
   connect(bluetooth_widget_, &BluetoothWidget::DeviceSelectedEvent,
           obd_client, &OBDClient::OnDeviceSelected);
-  connect(bluetooth_widget_, &BluetoothWidget::ServiceSelectedEvent,
-          obd_client, &OBDClient::OnServiceSelected);
 
   layout_->setCurrentIndex(static_cast<int>(StackedWidgetIndex::kBluetooth));
 }
