@@ -14,6 +14,7 @@ TARGET = bin/auto-pi
 INCLUDEPATH += src
 INCLUDEPATH += /usr/local/include
 LIBS += -L/usr/lib -L/usr/local/lib
+LIBS += -lbluetooth
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_MESSAGELOGCONTEXT
 
@@ -24,6 +25,8 @@ QMAKE_CLEAN += $(TARGET) $(QMAKE_TARGET) bin/auto-pi
 #---------------------------------------------------------------------
 # PART 4: Input
 SOURCES += \
+    src/controller/bluetooth.cpp \
+    src/controller/bluetooth_discovery_agent.cpp \
     src/controller/global_config.cpp \
     src/controller/log_controller.cpp \
     src/controller/obd_client.cpp \
@@ -36,6 +39,8 @@ SOURCES += \
     src/view/main_window.cpp
 HEADERS += \
     src/commons/singleton.h \
+    src/controller/bluetooth.h \
+    src/controller/bluetooth_discovery_agent.h \
     src/controller/global_config.h \
     src/controller/log_controller.h \
     src/controller/obd_client.h \

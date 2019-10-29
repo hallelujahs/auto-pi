@@ -92,6 +92,7 @@ void ConfigWidget::UpdateIp() {
     }
     local_ip_->setText(ip_str);
     qInfo() << "scan local ip: " << ip_str;
+    update_timer_->setInterval(10 * 1000);
     break;
   }
 }

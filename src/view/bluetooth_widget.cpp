@@ -25,6 +25,8 @@ BluetoothWidget::BluetoothWidget(QWidget *parent) : QWidget(parent) {
   device_agent_->setLowEnergyDiscoveryTimeout(5000);
   service_agent_ = new QBluetoothServiceDiscoveryAgent(this);
 
+  discovery_agent_ = new BluetoothDiscoveryAgent(this);
+
   auto *layout = new QVBoxLayout(this);
   auto *check_box_layout = new QHBoxLayout(this);
 
@@ -74,6 +76,13 @@ BluetoothWidget::BluetoothWidget(QWidget *parent) : QWidget(parent) {
           this, &BluetoothWidget::OnServiceDiscovered);
   connect(service_agent_, &QBluetoothServiceDiscoveryAgent::finished,
           this, &BluetoothWidget::OnServiceScanFinished);
+
+  connect(discovery_agent_, &BluetoothDiscoveryAgent::ErrorEvent,
+          this, &BluetoothWidget::OnDiscoveryError);
+  connect(discovery_agent_, &BluetoothDiscoveryAgent::DeviceDiscoveredEvent,
+          this, &BluetoothWidget::OnDeviceDiscovered2);
+  connect(discovery_agent_, &QThread::finished, this,
+          &BluetoothWidget::OnDeviceScanFinished);
 }
 
 void BluetoothWidget::OnScan() {
@@ -88,18 +97,20 @@ void BluetoothWidget::OnScan() {
 
   ClearDeviceList();
 
-  if (scan_service_->isChecked()) {
-    qInfo() << "start bluetooth service scaning";
-    service_agent_->start();
-  } else {
-    qInfo() << "start bluetooth device scaning";
-    device_agent_->start();
-  }
+  discovery_agent_->start();
+
+//  if (scan_service_->isChecked()) {
+//    qInfo() << "start bluetooth service scaning";
+//    service_agent_->start();
+//  } else {
+//    qInfo() << "start bluetooth device scaning";
+//    device_agent_->start();
+//  }
 }
 
 void BluetoothWidget::OnDeviceScanFinished() {
-  devices_ = device_agent_->discoveredDevices();
-  qInfo() << "end bluetooth scaning, sacn device count: " << devices_.size();
+  //devices_ = device_agent_->discoveredDevices();
+  //qInfo() << "end bluetooth scaning, sacn device count: " << devices_.size();
 
   scan_button_->setText("Scan");
   scan_button_->setDisabled(false);
@@ -124,12 +135,20 @@ void BluetoothWidget::OnServiceScanFinished() {
 
 void BluetoothWidget::OnDeviceDiscovered(const QBluetoothDeviceInfo &info) {
   static const QString kServiceType = "D";
-  AddDeviceInfo(kServiceType, info);
+//  AddDeviceInfo(kServiceType, info);
 }
 
 void BluetoothWidget::OnServiceDiscovered(const QBluetoothServiceInfo &info) {
   static const QString kServiceType = "S";
-  AddDeviceInfo(kServiceType, info.device());
+//  AddDeviceInfo(kServiceType, info.device());
+}
+
+void BluetoothWidget::OnDiscoveryError(BluetoothDiscoveryError code) {
+  (void)code;
+}
+
+void BluetoothWidget::OnDeviceDiscovered2(QString addr, QString name) {
+  AddDeviceInfo(std::move(addr), std::move(name));
 }
 
 void BluetoothWidget::OnItemDoubleClicked(QTableWidgetItem *item) {
@@ -217,6 +236,41 @@ void BluetoothWidget::AddDeviceInfo(const QString &type,
            << ", service: " << info.serviceClasses() << ", device uuid: "
            << info.deviceUuid().toString() << ", service uuids: "
            << service_uuids_str;
+}
+
+void BluetoothWidget::AddDeviceInfo(QString addr, QString name) {
+  if (addr == "") {
+    qWarning() << "scan device address empty";
+    return;
+  }
+
+  auto find_items =
+      bluetooth_list_->findItems(addr, Qt::MatchContains);
+  if (!find_items.empty()) {
+    qInfo() << "scan device: " << addr << " already in list, ignore";
+    return;
+  }
+
+  auto last_row = bluetooth_list_->rowCount();
+  bluetooth_list_->insertRow(last_row);
+
+  auto *type_item = new QTableWidgetItem("D");
+  auto *rssi_item = new QTableWidgetItem(0);
+  auto *name_item = new QTableWidgetItem(name);
+  auto *addr_item = new QTableWidgetItem(addr);
+  type_item->setFlags(type_item->flags() & ~Qt::ItemIsEditable);
+  rssi_item->setFlags(rssi_item->flags() & ~Qt::ItemIsEditable);
+  name_item->setFlags(name_item->flags() & ~Qt::ItemIsEditable);
+  addr_item->setFlags(addr_item->flags() & ~Qt::ItemIsEditable);
+
+  bluetooth_list_->setItem(
+        last_row, static_cast<int>(BluetoothTableColumn::kType), type_item);
+  bluetooth_list_->setItem(
+        last_row, static_cast<int>(BluetoothTableColumn::kRssi), rssi_item);
+  bluetooth_list_->setItem(
+        last_row, static_cast<int>(BluetoothTableColumn::kName), name_item);
+  bluetooth_list_->setItem(
+        last_row, static_cast<int>(BluetoothTableColumn::kAddress), addr_item);
 }
 
 
